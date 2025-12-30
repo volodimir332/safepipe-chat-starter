@@ -1,78 +1,134 @@
 # SafePipe Chat Starter
 
-A production-ready secure corporate chat implementation with automatic PII redaction.
+A minimal, ChatGPT-like AI chat interface with built-in PII protection. Perfect as a secure AI workspace for your employees.
+
+![SafePipe Chat](https://safepipe.eu/og-image.png)
+
+## Features
+
+- 🛡️ **Safe Mode Toggle** — Auto-redact PII before sending to AI
+- 📎 **File Upload** — Extract and sanitize text from PDFs
+- 💬 **Minimal Design** — Clean, ChatGPT-inspired interface
+- ⚡ **Real-time Streaming** — Instant AI responses
+- 🔒 **Enterprise Ready** — Deploy on your own domain
 
 ## Quick Start
 
+### 1. Clone the repository
+
 ```bash
-# Clone and install
-git clone https://github.com/safepipe/safepipe-chat-starter.git
+git clone https://github.com/volodimir332/safepipe-chat-starter.git
 cd safepipe-chat-starter
+```
+
+### 2. Install dependencies
+
+```bash
 npm install
+```
 
-# Configure environment
-cp .env.example .env.local
-# Add your SAFEPIPE_API_KEY
+### 3. Set up environment
 
-# Run
+```bash
+cp env.example .env.local
+```
+
+Edit `.env.local` and add your SafePipe API key:
+
+```
+SAFEPIPE_API_KEY=sp_your_api_key_here
+```
+
+Get your API key at [safepipe.eu/dashboard](https://safepipe.eu/dashboard)
+
+### 4. Run development server
+
+```bash
 npm run dev
 ```
 
-## Architecture
+Open [http://localhost:3000](http://localhost:3000)
+
+## Project Structure
 
 ```
 ├── app/
 │   ├── api/
-│   │   ├── chat/route.ts      # Proxy to SafePipe API
-│   │   └── extract/route.ts   # PDF/Text extraction
-│   ├── layout.tsx
-│   └── page.tsx
+│   │   ├── chat/route.ts      # Chat endpoint (proxies to SafePipe)
+│   │   └── extract/route.ts   # PDF text extraction
+│   ├── page.tsx               # Main chat page
+│   └── layout.tsx             # App layout
 ├── components/
 │   └── chat/
-│       └── chat-interface.tsx # UI components
+│       └── chat-interface.tsx # Chat UI component
 ├── lib/
 │   └── hooks/
-│       └── use-secure-chat.ts # Chat logic
+│       └── use-secure-chat.ts # Chat logic hook
+└── env.example                # Environment template
 ```
 
-## Features
+## How It Works
 
-- **Safe Mode Toggle**: Enable/disable PII protection
-- **File Upload**: PDF and text file extraction
-- **Redaction Highlighting**: Visual indication of protected data
-- **Streaming Responses**: Real-time AI responses
+1. User types a message or uploads a file
+2. **Safe Mode ON**: PII is automatically redacted before sending
+3. Request goes through SafePipe → AI Provider (OpenAI, Anthropic, etc.)
+4. AI response streams back to user
+5. All sensitive data stays protected
 
-## Configuration
+## Customization
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `SAFEPIPE_API_KEY` | Yes | Your SafePipe API key |
-| `OPENAI_API_KEY` | No | For BYOK mode only |
+### Change AI Model
+
+Edit `app/api/chat/route.ts`:
+
+```typescript
+body: JSON.stringify({
+  model: "gpt-4o",  // or "claude-3-sonnet", "gemini-1.5-pro"
+  // ...
+}),
+```
+
+### Add More File Types
+
+Edit `app/api/extract/route.ts`:
+
+```typescript
+const ALLOWED_TYPES = [
+  "application/pdf",
+  "text/plain",
+  "image/png",  // Add image support
+  "image/jpeg",
+];
+```
 
 ## Deployment
 
-### Vercel
+### Vercel (Recommended)
 
 ```bash
-vercel --prod
+vercel
 ```
-
-Set environment variables in Vercel dashboard.
 
 ### Docker
 
 ```dockerfile
 FROM node:20-alpine
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
 COPY . .
-RUN npm run build
-EXPOSE 3000
+RUN npm install && npm run build
 CMD ["npm", "start"]
 ```
 
 ## License
 
-MIT
+MIT — Free for commercial use.
 
+## Support
+
+- 📚 [Documentation](https://safepipe.eu/docs)
+- 💬 [Discord](https://discord.gg/safepipe)
+- 📧 [support@safepipe.eu](mailto:support@safepipe.eu)
+
+---
+
+Built with ❤️ by [SafePipe](https://safepipe.eu)

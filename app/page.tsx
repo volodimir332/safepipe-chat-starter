@@ -18,22 +18,19 @@ export default function ChatPage() {
   } = useSecureChat();
 
   return (
-    <main className="min-h-screen bg-zinc-950 p-4 md:p-8">
-      <div className="max-w-3xl mx-auto h-[calc(100vh-4rem)]">
-        <ChatInterface
-          messages={messages}
-          input={input}
-          isLoading={isLoading}
-          isSafeMode={isSafeMode}
-          files={files}
-          onInputChange={handleInputChange}
-          onSubmit={handleSubmit}
-          onToggleSafeMode={toggleSafeMode}
-          onFileUpload={handleFileUpload}
-          onRemoveFile={removeFile}
-        />
-      </div>
+    <main className="h-screen bg-zinc-950">
+      <ChatInterface
+        messages={messages}
+        input={input}
+        isLoading={isLoading}
+        isSafeMode={isSafeMode}
+        files={files}
+        onInputChange={handleInputChange}
+        onSubmit={handleSubmit}
+        onToggleSafeMode={toggleSafeMode}
+        onFileUpload={handleFileUpload}
+        onRemoveFile={removeFile}
+      />
     </main>
   );
 }
-
